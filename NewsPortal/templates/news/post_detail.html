@@ -1,0 +1,10 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title % }
+Публикация № {{ post.id }}
+{% endblock title % }
+
+{% block content %}
+<p>{{ post.title }}</p>
+<p>{{ post.text }}</p>
+{% endblock content %}

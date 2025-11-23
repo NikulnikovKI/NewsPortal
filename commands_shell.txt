@@ -11,10 +11,12 @@ Category.objects.create(name='Технологии')
 Category.objects.create(name='Новости')
 Category.objects.create(name='Образование')
 Category.objects.create(name='Развлечения')
+
 4. Добавить 2 статьи и 1 новость.
 news1 = Post.objects.create(author=author1,categoryType=Post.NEWS,title='Новости о технологиях',text='Краткое содержание новости')
 article1 = Post.objects.create(author=author2,categoryType=Post.ARTICLE,title='Учебная статья',text='Длинный текст')
 article2 = Post.objects.create(author=author1,categoryType=Post.ARTICLE,title='История',text='Обзор')
+
 5. Присвоить им категории (как минимум в одной статье/новости должно быть не меньше 2 категорий).
 cat_news = Category.objects.get(name='Новости')
 cat_entertainment = Category.objects.get(name='Развлечения')
@@ -24,24 +26,29 @@ cat_education = Category.objects.get(name='Образование')
 PostCategory.objects.create(postTrough=article1, categoryTrough=cat_education)
 cat_tech = Category.objects.get(name='Технологии')
 PostCategory.objects.create(postTrough=article2, categoryTrough=cat_tech
+
 6. Создать как минимум 4 комментария к разным объектам модели Post (в каждом объекте должен быть как минимум один комментарий).
 Comment.objects.create(commentPost=news1, commentUser=user2, text='Очень интересно!')
 Comment.objects.create(commentPost=article1, commentUser=user1, text='Отличная статья!')
 Comment.objects.create(commentPost=article2, commentUser=user2, text='Заслуживает внимания.')
 Comment.objects.create(commentPost=article2, commentUser=user1, text='Понравилось содержание.')
 7. Применяя функции like() и dislike() к статьям/новостям и комментариям, скорректировать рейтинги этих объектов.
+
 news1.like()
 article1.like()
 article1.dislike()
 comments = Comment.objects.all()
 comments[0].like()
 comments[1].dislike()
+
 8. Обновить рейтинги пользователей.
 author1.update_rating()
 author2.update_rating()
+
 9. Вывести username и рейтинг лучшего пользователя (применяя сортировку и возвращая поля первого объекта).
 top_author = Author.objects.all().order_by('-ratingAuthor').first()
 print(f'Лучший пользователь: {top_author.authorUser.username}, рейтинг: {top_author.ratingAuthor}')
+
 10. Вывести дату добавления, username автора, рейтинг, заголовок и превью лучшей статьи, основываясь на лайках/дислайках к этой статье.
 top_post = Post.objects.all().order_by('-rating').first()
 print(f'Дата: {top_post.dateCreation}')
@@ -49,7 +56,60 @@ print(f'Автор: {top_post.author.authorUser.username}')
 print(f'Рейтинг: {top_post.rating}')
 print(f'Заголовок: {top_post.title}')
 print(f'Превью: {top_post.preview()}')
+
 11.Вывести все комментарии (дата, пользователь, рейтинг, текст) к этой статье.
 comments_for_post = Comment.objects.filter(commentPost=top_post)
     for c in comments_for_post:
         print(f'Дата: {c.dateCreation}, Пользователь: {c.commentUser.username}, Рейтинг: {c.rating}, Текст: {c.text}')
+
+
+
+
+
+                                             --черновик--
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>{{ flatpage.title }}</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        {% load static %}
+        <link href="{% static % 'css/styles.css'}" rel="stylesheet" />
+    </head>
+    <body>
+        <!-- Responsive navbar-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">Новостной портал</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/about/">Link</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="#">Action</a></li>
+                                <li><a class="dropdown-item" href="#">Another action</a></li>
+                                <li><hr class="dropdown-divider" /></li>
+                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Page content-->
+        <div class="container">
+            <div class="text-center mt-5">
+                {{ flatpage.content }}
+            </div>
+        </div>
+
+    </body>
+</html>
+                                                --черновик--
