@@ -1,10 +1,18 @@
 {% extends 'flatpages/default.html' %}
 
-{% block title % }
-Публикация № {{ post.id }}
-{% endblock title % }
+{% load news_filters %}
+
+{% block title %}
+{{ post.title }}
+{% endblock %}
 
 {% block content %}
-<p>{{ post.title }}</p>
-<p>{{ post.text }}</p>
-{% endblock content %}
+<div class="container mt-5">
+    <h1>{{ post.title }}</h1>
+    <p><em>Дата публикации: {{ post.dateCreation|date:"d.m.Y" }}</em></p>
+    <div>
+        {{ post.text|censor_bad_words|linebreaks }}
+    </div>
+    <a href="{% url 'post_list' %}">Вернуться к списку новостей</a>
+</div>
+{% endblock %}

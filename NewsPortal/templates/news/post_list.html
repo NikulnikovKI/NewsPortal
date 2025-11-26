@@ -1,9 +1,25 @@
 {% extends 'flatpages/default.html' %}
 
-{% block title % }
-Все публикации
-{% endblock title % }
+{% load news_filters %}
+
+{% block title %}
+Новости
+{% endblock %}
 
 {% block content %}
-{{ posts }}
-{% endblock content %}
+<div class="container mt-5">
+    <h2>Общее число новостей: {{ posts|length }}</h2>
+    <h3>{{ time_now|date:"M d Y l" }}</h3>
+    <ul class="list-group mt-3">
+        {% for post in posts %}
+        <li class="list-group-item">
+            <a href="{% url 'post_detail' post.id %}"><strong>{{ post.title }}</strong></a><br>
+            <small>{{ post.dateCreation|date:"d.m.Y" }}</small><br>
+            <p>{{ post.text|truncatechars:15|censor_bad_words }}</p>
+        </li>
+        {% empty %}
+        <li class="list-group-item">Нет новостей.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
