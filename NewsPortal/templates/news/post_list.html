@@ -15,7 +15,7 @@
         <li class="list-group-item">
             <a href="{% url 'post_detail' post.id %}"><strong>{{ post.title }}</strong></a><br>
             <small>{{ post.dateCreation|date:"d.m.Y" }}</small><br>
-            <p>{{ post.text|truncatechars:15|censor_bad_words }}</p>
+            <p>{{ post.text|truncatechars:20|censor_bad_words }}</p>
         </li>
         {% empty %}
         <li class="list-group-item">Нет новостей.</li>
