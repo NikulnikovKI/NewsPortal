@@ -3,7 +3,7 @@
 {% load news_filters %}
 
 {% block title %}
-Новости
+Новости|censor_bad_words
 {% endblock %}
 
 {% block content %}
@@ -13,7 +13,7 @@
     <ul class="list-group mt-3">
         {% for post in posts %}
         <li class="list-group-item">
-            <a href="{% url 'post_detail' post.id %}"><strong>{{ post.title }}</strong></a><br>
+            <a href="{% url 'post_detail' post.id %}"><strong>{{ post.title|censor_bad_words }}</strong></a><br>
             <small>{{ post.dateCreation|date:"d.m.Y" }}</small><br>
             <p>{{ post.text|truncatechars:20|censor_bad_words }}</p>
         </li>

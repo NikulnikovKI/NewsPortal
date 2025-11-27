@@ -8,7 +8,7 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h1>{{ post.title }}</h1>
+    <h1>{{ post.title|censor_bad_words }}</h1>
     <p><em>Дата публикации: {{ post.dateCreation|date:"d.m.Y" }}</em></p>
     <div>
         {{ post.text|censor_bad_words|linebreaks }}
