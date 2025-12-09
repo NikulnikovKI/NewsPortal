@@ -1,0 +1,58 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}Поиск новостей{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Поиск новостей</h1>
+
+    <form method="get">
+        {{ filter.form.as_p }}
+        <button type="submit" class="btn btn-primary">Найти</button>
+    </form>
+
+    <hr>
+
+    <h2>Результаты:</h2>
+
+    {% if posts %}
+        {% for post in posts %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">{{ post.title }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        Автор: {{ post.author.user.username }},
+                        Дата: {{ post.dateCreation|date:"d.m.Y" }}
+                    </h6>
+                    <p class="card-text">{{ post.text|truncatechars:200 }}</p>
+                    <a href="{% url 'post_detail' post.pk %}" class="btn btn-link">Читать далее</a>
+                </div>
+            </div>
+        {% endfor %}
+
+        {% if is_paginated %}
+            <nav aria-label="Страницы">
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Предыдущая</a>
+                        </li>
+                    {% endif %}
+
+                    <li class="page-item active">
+                        <a class="page-link" href="#">{{ page_obj.number }}</a>
+                    </li>
+
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Следующая</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
+    {% else %}
+        <p>Ничего не найдено.</p>
+    {% endif %}
+</div>
+{% endblock %}

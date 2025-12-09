@@ -1,11 +1,15 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Sum
+from django.urls import reverse_lazy
 
 
 class Author(models.Model):
     authorUser = models.OneToOneField(User, on_delete=models.CASCADE)
     ratingAuthor = models.SmallIntegerField(default=0)
+
+    def __str__(self):
+        return self.authorUser.username
 
     def update_rating(self):
         postRat = self.post_set.all().aggregate(postRating=Sum('rating'))
@@ -22,6 +26,10 @@ class Author(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=64, unique=True)
+
+
+    def __str__(self):
+        return self.name
 
 
 class Post(models.Model):
@@ -49,6 +57,9 @@ class Post(models.Model):
 
     def preview(self):
         return self.text[0:123] + '...'
+
+    def get_absolute_url(self):
+        return reverse_lazy("post_detail", kwargs={"pk": self.pk})
 
 class PostCategory(models.Model):
     postTrough = models.ForeignKey(Post, on_delete=models.CASCADE)

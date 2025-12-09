@@ -1,18 +1,39 @@
-{% extends 'flatpages/default.html' %}
+ {% extends 'flatpages/default.html' %}
 
-{% load news_filters %}
+ {% load news_filters %}
 
-{% block title %}
-{{ post.title }}
-{% endblock %}
+ {% block title %}
+    {{ post.title }}
+ {% endblock %}
 
-{% block content %}
-<div class="container mt-5">
-    <h1>{{ post.title|censor_bad_words }}</h1>
-    <p><em>Дата публикации: {{ post.dateCreation|date:"d.m.Y" }}</em></p>
-    <div>
-        {{ post.text|censor_bad_words|linebreaks }}
-    </div>
-    <a href="{% url 'post_list' %}">Вернуться к списку новостей</a>
-</div>
-{% endblock %}
+ {% block content %}
+     <div class="container mt-5">
+         <h1>{{ post.title|censor_bad_words }}</h1>
+         <p><em>Дата публикации: {{ post.dateCreation|date:"d.m.Y" }}</em></p>
+         <div>
+             {{ post.text|censor_bad_words|linebreaks }}
+         </div>
+         <a href="{% url 'post_list' %}">Вернуться к списку новостей</a>     <hr>  <!-- Разделитель для визуального отделения ссылок -->
+
+     <div>
+         <!-- Ссылки для изменения -->
+         <td>
+         {% if post.post_type == "NW" %}
+             <a href="{% url 'news_update' post.pk %}">Изменить новость</a>
+         {% else %}
+             <a href="{% url 'articles_update' post.pk %}">Изменить статью</a>
+         {% endif %}
+         </td>
+
+         <!-- Ссылки для удаления -->
+         <td>
+         {% if post.post_type == "NW" %}
+             <a href="{% url 'news_delete' post.pk %}">Удалить новость</a>
+         {% else %}
+             <a href="{% url 'articles_delete' post.pk %}">Удалить статью</a>
+         {% endif %}
+        </td>
+     </div>
+ </div>
+
+             {% endblock %}
